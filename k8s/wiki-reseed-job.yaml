@@ -11,7 +11,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: reseed
-          image: ghcr.io/mvs5465/cluster-lite-wiki:main
+          image: ghcr.io/mvs5465-test/cluster-lite-wiki:main
           command: ["python", "app.py", "reseed"]
           env:
             - name: WIKI_DATA_DIR
