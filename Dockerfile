@@ -20,4 +20,4 @@ RUN mkdir -p /data
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "mkdir -p \"${PROMETHEUS_MULTIPROC_DIR}\" && find \"${PROMETHEUS_MULTIPROC_DIR}\" -type f -delete && gunicorn --config gunicorn.conf.py --bind 0.0.0.0:${PORT} --workers 2 --threads 4 --timeout 60 wsgi:app"]
+CMD ["sh", "-c", "mkdir -p \"${PROMETHEUS_MULTIPROC_DIR}\" && find \"${PROMETHEUS_MULTIPROC_DIR}\" -type f -delete && gunicorn --config gunicorn.conf.py --bind 0.0.0.0:${PORT} --workers 1 --threads 4 --timeout 60 wsgi:app"]
