@@ -1,22 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Pages | {{ site_name }}{% endblock %}
+{% block title %}Library | {{ site_name }}{% endblock %}
 {% block content %}
 <section class="wiki-layout">
-  <aside class="wiki-nav">
+  <aside class="wiki-nav" id="wiki-sidebar">
     <div class="wiki-nav-section">
-      <p class="eyebrow">Navigation</p>
-      <h1>All Articles</h1>
-      <p class="muted">An alphabetical index for the cluster knowledge base.</p>
+      <p class="nav-label">Library</p>
+      <span class="stats-chip"><strong>{{ pages|length }}</strong>&nbsp;article{% if pages|length != 1 %}s{% endif %}{% if query %} matching "{{ query }}"{% endif %}</span>
     </div>
-    <a class="button primary full-width" href="{{ url_for('new_page') }}"><span class="button-icon" aria-hidden="true">&#9998;</span> Create Article</a>
-    <form class="search wiki-search" method="get" action="{{ url_for('list_pages') }}">
-      <input type="search" name="q" value="{{ query }}" placeholder="Search">
-      <button type="submit">Search</button>
-    </form>
     <div class="wiki-nav-section">
-      <p class="eyebrow">Stats</p>
-      <p><strong>{{ pages|length }}</strong> visible article{% if pages|length != 1 %}s{% endif %}</p>
-      <p class="muted">Filter: {{ query or "All pages" }}</p>
+      <a class="button primary full-width" href="{{ url_for('new_page') }}"><span class="button-icon" aria-hidden="true">+</span> New Article</a>
+    </div>
+    <div class="wiki-nav-section">
+      <form class="sidebar-search" method="get" action="{{ url_for('list_pages') }}">
+        <input type="search" name="q" value="{{ query }}" placeholder="Search articles…">
+        <button type="submit" aria-label="Search">&#128269;</button>
+      </form>
     </div>
     {% if pages %}
     <nav class="article-index" aria-label="Article index">
@@ -25,52 +23,60 @@
       {% endfor %}
     </nav>
     {% else %}
-    <div class="empty compact-empty">
-      <p>No matching articles.</p>
+    <div style="padding: 0.75rem 1rem;">
+      <p style="color: var(--text-dim); font-size: 0.85rem;">No matching articles.</p>
     </div>
     {% endif %}
   </aside>
 
-  <section class="panel wiki-main">
+  <section class="wiki-main">
     <div class="wiki-main-header">
-      <div>
-        <p class="eyebrow">Main Page</p>
-        <h2>Cluster Articles</h2>
+      <div class="header-left">
+        <p class="eyebrow">Library</p>
+        <h2>All Articles</h2>
+      </div>
+      <div class="header-actions">
+        <form class="search-bar" method="get" action="{{ url_for('list_pages') }}">
+          <input type="search" name="q" value="{{ query }}" placeholder="Search articles…">
+          <button type="submit" class="button">Search</button>
+        </form>
       </div>
     </div>
 
     {% if pages %}
-    <section class="featured-article">
-      <div class="category-header">
-        <h3>Featured Article</h3>
-        <p class="muted">Start here</p>
-      </div>
-      <article class="featured-body">
-        <h3><a href="{{ url_for('view_page', slug=featured_page['slug']) }}">{{ featured_page['title'] }}</a></h3>
-        <p class="article-meta">/{{ featured_page['slug'] }} · Updated {{ featured_page['updated_at'] }}</p>
-        <p class="page-summary">{{ featured_page['body']|excerpt(260) }}</p>
-      </article>
-    </section>
-
-    <div class="category-grid link-grid">
-      {% for category, category_pages in grouped_pages %}
-      <section class="category-panel">
-        <div class="category-header">
-          <h3>{{ category }}</h3>
-          <p class="muted">{{ category_pages|length }} article{% if category_pages|length != 1 %}s{% endif %}</p>
+    <div class="page-list-body">
+      <div class="featured-article">
+        <div class="featured-label">
+          <p class="nav-label">Featured</p>
+          <span class="featured-badge">Start here</span>
         </div>
-        <nav class="category-link-list" aria-label="{{ category }}">
-          {% for page in category_pages %}
-          <a href="{{ url_for('view_page', slug=page['slug']) }}">{{ page['title'] }}</a>
-          {% endfor %}
-        </nav>
-      </section>
-      {% endfor %}
+        <a class="featured-title" href="{{ url_for('view_page', slug=featured_page['slug']) }}">{{ featured_page['title'] }}</a>
+        <p class="featured-excerpt">{{ featured_page['body']|excerpt(240) }}</p>
+        <p class="featured-meta">/{{ featured_page['slug'] }} · Updated {{ featured_page['updated_at'] }}</p>
+      </div>
+
+      <div class="category-grid">
+        {% for category, category_pages in grouped_pages %}
+        <section class="category-panel">
+          <div class="category-header">
+            <h3>{{ category }}</h3>
+            <span class="category-count">{{ category_pages|length }}</span>
+          </div>
+          <nav class="category-link-list" aria-label="{{ category }}">
+            {% for page in category_pages %}
+            <a href="{{ url_for('view_page', slug=page['slug']) }}">{{ page['title'] }}</a>
+            {% endfor %}
+          </nav>
+        </section>
+        {% endfor %}
+      </div>
     </div>
     {% else %}
-    <div class="empty">
-      <h3>No pages yet</h3>
-      <p>Start by creating the first article in this wiki.</p>
+    <div class="wiki-main-body">
+      <div class="empty">
+        <h3>No pages yet</h3>
+        <p>Create the first article to get started.</p>
+      </div>
     </div>
     {% endif %}
   </section>
