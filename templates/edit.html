@@ -1,23 +1,27 @@
 {% extends "base.html" %}
-{% block title %}{% if is_new %}New Page{% else %}Edit {{ page['title'] }}{% endif %} | {{ site_name }}{% endblock %}
+{% block title %}{% if is_new %}New Article{% else %}Edit — {{ page['title'] }}{% endif %} | {{ site_name }}{% endblock %}
 {% block content %}
 <section class="docs-layout">
   <aside class="sidebar-card">
-    <p class="eyebrow">Writing</p>
-    <h1>{% if is_new %}Create Page{% else %}Edit Page{% endif %}</h1>
-    <p class="muted">Markdown is supported. Keep titles human-readable and slugs stable.</p>
-    <div class="sidebar-note">
-      <h2>Quick tips</h2>
-      <p>Lead with purpose, use headings for sections, and keep operational commands in fenced code blocks.</p>
+    <div class="sidebar-card-section">
+      <p class="nav-label">{% if is_new %}New Article{% else %}Editing{% endif %}</p>
+      <h1>{% if is_new %}Create Page{% else %}{{ page['title'] }}{% endif %}</h1>
+    </div>
+    <div class="sidebar-card-section">
+      <p class="muted" style="font-size: 0.85rem; line-height: 1.55;">Markdown supported. Keep slugs stable — they're the article's permanent URL.</p>
+    </div>
+    <div class="sidebar-card-section">
+      <div class="sidebar-note">
+        <h2>Tips</h2>
+        <p>Lead with purpose. Use headings for sections. Put commands in fenced code blocks.</p>
+      </div>
     </div>
   </aside>
 
   <section class="panel doc-panel">
     <div class="page-index-header">
-      <div>
-        <p class="eyebrow">Editor</p>
-        <h2>{% if is_new %}Draft a new document{% else %}Revise {{ page['title'] }}{% endif %}</h2>
-      </div>
+      <p class="eyebrow">Editor</p>
+      <h2>{% if is_new %}New document{% else %}Revise "{{ page['title'] }}"{% endif %}</h2>
     </div>
     <form class="editor" method="post" action="{{ url_for('save_page') }}">
       {% if not is_new %}
@@ -26,22 +30,23 @@
       <div class="field-grid">
         <label>
           Title
-          <input type="text" name="title" value="{{ page['title'] }}" required>
+          <input type="text" name="title" value="{{ page['title'] }}" required autofocus>
         </label>
         <label>
           Slug
-          <input type="text" name="slug" value="{{ page['slug'] }}" placeholder="generated-from-title">
+          <input type="text" name="slug" value="{{ page['slug'] }}" placeholder="auto-generated-from-title">
         </label>
       </div>
       <label>
         Body
-        <textarea name="body" rows="18" required>{{ page['body'] }}</textarea>
+        <textarea name="body" rows="22" required>{{ page['body'] }}</textarea>
       </label>
       <div class="actions">
-        <button class="button primary" type="submit">Save</button>
+        <button class="button primary" type="submit">Save Article</button>
         {% if not is_new %}
         <a class="button subtle" href="{{ url_for('view_page', slug=page['slug']) }}">Cancel</a>
         {% endif %}
+        <a class="button subtle" href="{{ url_for('list_pages') }}">Library</a>
       </div>
     </form>
   </section>

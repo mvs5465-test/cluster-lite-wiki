@@ -10,16 +10,33 @@
   <body>
     <header class="topbar">
       <div class="brand-block">
+        <div class="brand-icon" aria-hidden="true">W</div>
         <a class="brand" href="{{ url_for('list_pages') }}">{{ site_name }}</a>
-        <p class="brand-tagline">Internal docs for systems, runbooks, and notes.</p>
       </div>
-      <nav class="nav" aria-label="Primary">
-        <a href="{{ url_for('list_pages') }}">Library</a>
-        <a href="{{ url_for('new_page') }}">Write</a>
-      </nav>
+      <div class="topbar-right">
+        <nav class="nav" aria-label="Primary">
+          <a href="{{ url_for('list_pages') }}">Library</a>
+          <a href="{{ url_for('new_page') }}">Write</a>
+        </nav>
+        <button class="mobile-nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="wiki-sidebar" aria-label="Toggle navigation">
+          &#9776; Pages
+        </button>
+      </div>
     </header>
     <main class="shell">
       {% block content %}{% endblock %}
     </main>
+    <script>
+      var toggle = document.getElementById('nav-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          var sidebar = document.getElementById('wiki-sidebar');
+          if (!sidebar) return;
+          var open = sidebar.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          toggle.textContent = open ? '\u2715 Close' : '\u2630 Pages';
+        });
+      }
+    </script>
   </body>
 </html>
