@@ -13,3 +13,35 @@ jobs:
       contents: read
       packages: write
     uses: mvs5465-test/.github/.github/workflows/docker-build.yml@main
+
+  update-image-tag:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write digest to argocd source file
+        run: |
+          cat > chart/.argocd-source-cluster-lite-wiki.yaml <<EOF
+          helm:
+            parameters:
+            - name: image.repository
+              value: ghcr.io/mvs5465-test/cluster-lite-wiki
+              forcestring: true
+            - name: image.tag
+              value: main@${{ needs.build.outputs.digest }}
+              forcestring: true
+          EOF
+
+      - name: Commit updated image tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add chart/.argocd-source-cluster-lite-wiki.yaml
+          git diff --staged --quiet || git commit -m "chore(deploy): update image digest to main@${{ needs.build.outputs.digest }}"
+          git push
