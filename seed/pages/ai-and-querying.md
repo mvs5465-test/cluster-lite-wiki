@@ -2,54 +2,46 @@
 title: AI And Querying Stack
 slug: ai-and-querying
 ---
-The AI side of the cluster is designed to provide a local chat interface plus tool-aware cluster querying.
+The AI side of the cluster currently exposes a browser chat interface while keeping the older query-router and MCP-facing browser entrypoints disabled.
 
-## Chat Path
+## Current State
+
+- `chat.lan` is part of the desired live ingress set again
+- `info.lan` is still not part of the current desired live ingress set
+- the older query-router and MCP-oriented manifests remain in `apps/disabled/` in `local-k8s-apps`
+
+## Open WebUI
 
 The user-facing chat entry point is Open WebUI:
 
-- Service: `chat`
+- Service: `open-webui`
 - Namespace: `ai`
 - Host: `chat.lan`
+- Authentication: disabled for local LAN use
 
-It points at:
+Open WebUI connects directly to the cluster-facing Ollama service alias:
 
-- `OLLAMA_BASE_URL=http://ollama-mcp-bridge.ai.svc.cluster.local:8000`
+- `http://ollama-external.ai.svc.cluster.local:11434`
 
-Authentication is currently disabled for local use:
+## Ollama Host
 
-- `WEBUI_AUTH=false`
+Ollama runs directly on the mini-server host rather than as an in-cluster workload.
 
-## Ollama Bridge
+- Host machine: `mini-server`
+- LAN IP: `192.168.1.173`
+- Port: `11434`
 
-`ollama-mcp-bridge` is the tool-aware adapter between chat and the model endpoint.
-
-- Namespace: `ai`
-- Internal port: `8000`
-- Upstream model endpoint: `http://ollama-external.ai.svc.cluster.local:11434`
-
-It also mounts an MCP configuration that currently includes:
-
-- Prometheus MCP
-- Loki MCP
-
-That lets model requests reach cluster metrics and logs through a structured tool layer.
+The cluster reaches it through the `ollama-external` service in namespace `ai`, which keeps in-cluster clients on stable Kubernetes DNS even though the actual model runtime is host-local.
 
 ## Cluster Query Router
 
-`cluster-query-router` is exposed at `info.lan` and centralizes cluster-oriented query routing.
-
-Configured upstream dependencies:
-
-- Loki MCP: `http://loki-mcp.monitoring.svc.cluster.local:8000`
-- Prometheus MCP: `http://prometheus-mcp.monitoring.svc.cluster.local:8080`
-- Ollama: `http://ollama-external.ai.svc.cluster.local:11434`
+`cluster-query-router` is currently kept disabled rather than exposed at `info.lan`.
 
 ## MCP Services
 
 | Service | Namespace | Purpose |
 | --- | --- | --- |
-| Prometheus MCP | `monitoring` | Structured metrics access |
-| Loki MCP | `monitoring` | Structured log access |
+| Prometheus MCP | `monitoring` | Structured metrics access when enabled |
+| Loki MCP | `monitoring` | Structured log access when enabled |
 
-Together, these services support a local AI workflow where cluster context is available through tools instead of only raw prompt text.
+These components are still part of the broader cluster tooling story, but the currently restored browser-facing AI path is Open WebUI plus the mini-server Ollama host.

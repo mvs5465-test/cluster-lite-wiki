@@ -14,7 +14,7 @@ This page is the quick inventory of what is running in the cluster and why.
 | Prometheus | `monitoring` | Metrics backend, retention, and query UI |
 | Grafana | `monitoring` | Dashboards and visual analysis |
 | Loki | `monitoring` | Log aggregation backend |
-| NGINX Ingress | `ingress-nginx` | Shared ingress layer |
+| Traefik | `kube-system` | Built-in k3s ingress layer for `.lan` routes |
 
 ## User-Facing Services
 
@@ -24,19 +24,20 @@ This page is the quick inventory of what is running in the cluster and why.
 | Cluster Lite Wiki | `services` | `wiki.lan` | Lightweight internal docs |
 | Gatus | `services` | `gatus.lan` | Uptime checks and status |
 | Jellyfin | `services` | `jellyfin.lan` | Media library and streaming |
+| ArgoCD | `argocd` | `argocd.lan` | GitOps control plane and app sync status |
+| Prometheus | `monitoring` | `prometheus.lan` | Metrics query UI |
+| Grafana | `monitoring` | `grafana.lan` | Dashboards and visual analysis |
 
 ## AI And Tooling
 
 | Service | Namespace | Host | Purpose |
 | --- | --- | --- | --- |
-| Chat (Open WebUI) | `ai` | `chat.lan` | Browser chat interface |
-| Cluster Query Router | `ai` | `info.lan` | Routes cluster-oriented queries |
-| Ollama MCP Bridge | `ai` | internal | Bridges model calls to MCP tools |
-| Ollama External | `ai` | internal | Cluster-facing service for native Ollama |
-| Prometheus MCP | `monitoring` | `prometheus-mcp.lan` | Metrics access through MCP |
-| Loki MCP | `monitoring` | `loki-mcp.lan` | Log access through MCP |
+| Chat (Open WebUI) | `ai` | `chat.lan` | Browser chat UI backed by the mini-server Ollama host |
+| Ollama External | `ai` | internal | Cluster-facing service alias for the host-level Ollama runtime |
+| GitHub PR Slack Notifier | `github-pr-slack-notifier` | internal | Sends Slack notifications for GitHub PR activity |
 
 ## Notes
 
 - `Cluster Home` is the primary navigation layer for the local cluster.
 - `Cluster Lite Wiki` is optimized for fast browser editing and operational notes.
+- Some older app manifests remain in `apps/disabled/`, but this page tracks the current desired live set.
