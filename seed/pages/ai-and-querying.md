@@ -23,6 +23,17 @@ Open WebUI connects directly to the cluster-facing Ollama service alias:
 
 - `http://ollama-external.ai.svc.cluster.local:11434`
 
+## AI Briefings In Other Apps
+
+`cluster-news` can also use the same Ollama service alias for optional on-demand briefings:
+
+- Service: `cluster-news`
+- Namespace: `services`
+- Host: `news.lan`
+- Ollama target: `http://ollama-external.ai.svc.cluster.local:11434`
+
+This keeps AI summarization available to other local apps without requiring each app to know the mini-server LAN IP directly.
+
 ## Ollama Host
 
 Ollama runs directly on the mini-server host rather than as an in-cluster workload.
