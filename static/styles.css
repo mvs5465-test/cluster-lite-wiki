@@ -572,6 +572,9 @@ label {
   font-size: 0.95rem;
   line-height: 1.8;
   max-width: 72ch;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .content > * + * {
@@ -606,13 +609,16 @@ label {
   font-family: ui-monospace, "SF Mono", "Fira Code", monospace;
   font-size: 0.85em;
   padding: 0.1em 0.4em;
+  overflow-wrap: anywhere;
 }
 
 .content pre {
   background: var(--bg);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
+  max-width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 1.1rem 1.25rem;
   margin: 1.5rem 0;
 }
@@ -621,7 +627,9 @@ label {
   background: none;
   border: none;
   font-size: 0.875rem;
+  overflow-wrap: normal;
   padding: 0;
+  word-break: normal;
 }
 
 .content blockquote {
@@ -633,8 +641,21 @@ label {
 
 .content table {
   border-collapse: collapse;
+  display: block;
   font-size: 0.9rem;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
   width: 100%;
+}
+
+.content img,
+.content svg,
+.content video,
+.content iframe {
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
 
 .content th,
