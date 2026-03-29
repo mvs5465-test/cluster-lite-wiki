@@ -4,5 +4,5 @@ helm:
     value: ghcr.io/mvs5465-test/cluster-lite-wiki
     forcestring: true
   - name: image.tag
-    value: main@sha256:357823c8c873c29f1a20b0cb7667bbfb302aa3682f7cd2a3957a14b1e5b6a893
+    value: main@sha256:9a58269f4ee515ebffb5e7f087028fc96231bd0cddf819052534662b2295eb63
     forcestring: true
