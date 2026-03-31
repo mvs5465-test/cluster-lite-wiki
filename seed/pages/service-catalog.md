@@ -22,6 +22,7 @@ This page is the quick inventory of what is running in the cluster and why.
 | --- | --- | --- | --- |
 | Cluster Home | `services` | `home.lan` | Main custom dashboard with curated links |
 | Cluster News | `services` | `news.lan` | Curated RSS feeds, saved stories, and optional AI briefings |
+| Notes App | `services` | `notes.lan` | Simple personal note-taking app backed by SQLite |
 | Cluster Lite Wiki | `services` | `wiki.lan` | Lightweight internal docs |
 | Gatus | `services` | `gatus.lan` | Uptime checks and status |
 | Jellyfin | `services` | `jellyfin.lan` | Media library and streaming |
@@ -41,5 +42,6 @@ This page is the quick inventory of what is running in the cluster and why.
 
 - `Cluster Home` is the primary navigation layer for the local cluster.
 - `Cluster News` is a local-first feed reader rather than a general-purpose web scraper.
+- `Notes App` is a lightweight browser-first scratchpad with notes persisted on a local PVC.
 - `Cluster Lite Wiki` is optimized for fast browser editing and operational notes.
 - Some older app manifests remain in `apps/disabled/`, but this page tracks the current desired live set.

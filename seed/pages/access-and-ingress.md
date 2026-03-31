@@ -28,6 +28,7 @@ Do not rely on wildcard `/etc/hosts` entries; hosts files do not support them.
 | --- | --- |
 | `home.lan` | Cluster Home |
 | `news.lan` | Cluster News |
+| `notes.lan` | Notes App |
 | `argocd.lan` | ArgoCD |
 | `wiki.lan` | Cluster Lite Wiki |
 | `gatus.lan` | Gatus status page |

@@ -57,6 +57,7 @@ Mac Host
 | Service | Host | Role |
 | --- | --- | --- |
 | Cluster Home | `home.lan` | Custom curated dashboard for the cluster |
+| Notes App | `notes.lan` | Lightweight personal notes with persistent local SQLite storage |
 | Cluster Lite Wiki | `wiki.lan` | Lightweight notes, runbooks, and reference docs |
 | Gatus | `gatus.lan` | Health checks and uptime status |
 | Jellyfin | `jellyfin.lan` | Media server |
